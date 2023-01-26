@@ -1,6 +1,6 @@
 const express = require('express');
 const populateStockDetails = require('../../scripts/populate-stock-details');
-const {allStocksModel} = require('../models');
+const {AllStocksModel} = require('../models');
 const router = express.Router();
 
 router.put('/', async(req,res)=>{
@@ -10,12 +10,12 @@ router.put('/', async(req,res)=>{
 
 router.get('/all', async(req,res)=>{
     const {limit = 10,skip = 0} = req.query;
-    const allStocks = await allStocksModel.find({}).limit(limit).skip(skip);
+    const allStocks = await AllStocksModel.find({}).limit(limit).skip(skip);
     res.json({data: allStocks});
 });
 
 router.get('/:stockSymbol', async(req,res)=>{
-    const stockDetails = await allStocksModel.findOne({stockSymbol: req.params.stockSymbol});
+    const stockDetails = await AllStocksModel.findOne({symbol: req.params.stockSymbol});
     res.json({stockDetails});
 });
 
