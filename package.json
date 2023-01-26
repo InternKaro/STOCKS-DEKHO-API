@@ -16,6 +16,7 @@
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "mongodb": "^4.13.0",
-    "mongoose": "^6.8.4"
+    "mongoose": "^6.8.4",
+    "request": "^2.88.2"
   }
 }
