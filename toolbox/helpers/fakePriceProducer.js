@@ -5,7 +5,7 @@ function generateFakePriceData(timeFrame){
     const oneYearAgo = moment().subtract(timeFrame - 1, 'days').startOf('day');
     const currentDate = moment().endOf('day');
     while (oneYearAgo.isBefore(currentDate)) {
-      const midPrice = Math.floor(Math.random() * 10000) + 50;
+      const midPrice = Math.floor(Math.random() * 1010) + 5000;
       const date = moment(oneYearAgo);
       fakeData.push({ midPrice, date });
       oneYearAgo.add(1, 'day');
