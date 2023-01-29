@@ -10,6 +10,10 @@ app.use(routes);
 app.get('/health',(req,res)=>{
     res.json(req.body);
 });
+app.get('/',(req,res)=>{
+    res.send("Server Started");
+});
+
 app.listen(port,()=>{
     console.log(`Server started on ${port}`)
 });
