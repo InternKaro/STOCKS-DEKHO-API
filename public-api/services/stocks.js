@@ -13,6 +13,7 @@ class Stocks extends BaseService{
     async getAllDetails(){
         const {limit = 10,skip = 0} = req.query;
     const allStocks = await AllStocksModel.find({}).limit(limit).skip(skip);
-    return { allStocks };}
+    return { allStocks };
+}
 }
 module.exports = Stocks;
