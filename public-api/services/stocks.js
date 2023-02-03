@@ -11,7 +11,7 @@ class Stocks extends BaseService{
         const stockDetails = await AllStocksModel.findOne({symbol: this.params.stockSymbol});
         return {stockDetails};
     }
-    async getAllDetails(){
+    async getAllStocksDetails(){
         const {limit = 10,skip = 0} = this.query;
         const allStocks = await AllStocksModel.find({}).limit(limit).skip(skip);
         return { allStocks };
