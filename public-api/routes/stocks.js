@@ -17,7 +17,7 @@ router.put('/', async(req,res)=>{
 router.get('/all', async(req,res)=>{
     const {limit = 10,skip = 0} = req.query;
     const allStocks = await AllStocksModel.find({}).limit(limit).skip(skip);
-    res.json({data: allStocks});
+    return responseHandler(allStocks.getAllDetails(),res);
 });
 
 router.get('/:stockSymbol', async(req,res)=>{
