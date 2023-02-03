@@ -6,6 +6,10 @@ const router = express.Router();
 const Stocks = require('../services/stocks');
 
 router.put('/', async(req,res)=>{
+    const stockDetails = await AllStocksModel.find({});
+    if(stockDetails){
+        await AllStocksModel.deleteMany({});
+    }
     await populateStockDetails();
     res.json({result:'OK'});
 });
