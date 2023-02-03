@@ -6,18 +6,21 @@ const router = express.Router();
 const Stocks = require('../services/stocks');
 
 router.put('/', async(req,res)=>{
-    const stockDetails = await AllStocksModel.find({});
-    if(stockDetails){
-        await AllStocksModel.deleteMany({});
-    }
-    await populateStockDetails();
-    res.json({result:'OK'});
+    const stocksService = new Stocks(req);
+    return responseHandler(stocksService.insertAllStocks(),res);
+    // const stockDetails = await AllStocksModel.find({});
+    // if(stockDetails){
+    //     await AllStocksModel.deleteMany({});
+    // }
+    // await populateStockDetails();
+    // res.json({result:'OK'});
 });
 
 router.get('/all', async(req,res)=>{
-    const {limit = 10,skip = 0} = req.query;
-    const allStocks = await AllStocksModel.find({}).limit(limit).skip(skip);
-    return responseHandler(allStocks.getAllDetails(),res);
+    // const {limit = 10,skip = 0} = req.query;
+    // const allStocks = await AllStocksModel.find({}).limit(limit).skip(skip);
+    const stocksService = new Stocks(req);
+    return responseHandler(stocksService.getAllDetails(),res);
 });
 
 router.get('/:stockSymbol', async(req,res)=>{
