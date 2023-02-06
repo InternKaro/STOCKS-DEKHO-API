@@ -20,7 +20,7 @@ router.get('/:stockSymbol', async(req,res)=>{
 
 router.delete('/inActiveStocks', async(req,res) =>{
     const stocksService = new Stocks(req);
-    return responseHandler(stocksService.getStockDetails(),res);
+    return responseHandler(stocksService.deleteInActiveStocks(),res);
 });
 
 module.exports = router;
