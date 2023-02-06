@@ -18,4 +18,9 @@ router.get('/:stockSymbol', async(req,res)=>{
     return responseHandler(stocksService.getStockDetails(),res);
 });
 
+router.delete('/inActiveStocks', async(req,res) =>{
+    const stocksService = new Stocks(req);
+    return responseHandler(stocksService.getStockDetails(),res);
+});
+
 module.exports = router;

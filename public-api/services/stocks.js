@@ -24,5 +24,12 @@ class Stocks extends BaseService{
         await populateStockDetails();
         return {result:'OK'};
     }
+
+    async deleteInActiveStocks(){
+        //Defination.
+        // Get all valid stocks from price table,
+        // Delete all stocks which are not in price table from stocks table.
+        return {result: 'OK'};
+    }
 }
 module.exports = Stocks;
