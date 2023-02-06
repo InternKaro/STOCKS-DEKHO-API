@@ -1,6 +1,7 @@
 const BaseService = require('./base-service');
-const { AllStocksModel } = require('../models');
+const { AllStocksModel,PriceTicksModel } = require('../models');
 const populateStockDetails = require('../../scripts/populate-stock-details');
+const allStocksModel = require('../models/all-stocks-model');
 
 class Stocks extends BaseService{
     constructor(props){
@@ -26,9 +27,15 @@ class Stocks extends BaseService{
     }
 
     async deleteInActiveStocks(){
-        //Defination.
-        // Get all valid stocks from price table,
-        // Delete all stocks which are not in price table from stocks table.
+        const [allPriceTicks,allStockDetails] = await Promise.all([PriceTicksModel.find({}),AllStocksModel.find({})])
+        const symbolsFromPriceTable = allPriceTicks.map((singlePriceTick) => {
+            return singlePriceTick.symbol;
+        })
+        const symbolsFromAllStocksTable = allStockDetails.map((singleStock) => {
+            return singleStock.symbol;
+        })
+        const  symbolsToBeDeleted = symbolsFromAllStocksTable.filter( symbol=> ! symbolsFromPriceTable.includes(symbol) )
+        await AllStocksModel.deleteMany({symbol: { $in: symbolsToBeDeleted }});
         return {result: 'OK'};
     }
 }
