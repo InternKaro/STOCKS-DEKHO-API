@@ -9,7 +9,6 @@ class Stocks extends BaseService{
     }
 
     async getStockDetails(){
- //getstock details
         const stockDetails = await AllStocksModel.findOne({symbol: this.params.stockSymbol});
         return {stockDetails};
     }
