@@ -58,7 +58,8 @@ router.put('/', (req,res)=>{
 });
 
 router.get('/', async (req,res)=>{
-    const data = await PriceTicksModel.find({});
+    const {limit = 10,skip = 0} = req.query;
+    const data = await PriceTicksModel.find({}).limit(limit).skip(skip);
     res.json({data})
 });
 
