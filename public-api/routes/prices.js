@@ -63,6 +63,13 @@ router.get('/', async (req,res)=>{
     res.json({data})
 });
 
+router.get('/search', async (req,res)=>{
+    const {symbol} = req.query;
+    const regex = new RegExp(symbol, 'i');
+    let data = await PriceTicksModel.find({symbol:{ $regex: regex }});
+    res.json({data})
+});
+
 router.get('/:stockSymbol', async (req,res)=>{
     const {stockSymbol} = req.params;
     let data = await PriceTicksModel.findOne({symbol: stockSymbol}) || buildDefaultPriceResponse(stockSymbol);
