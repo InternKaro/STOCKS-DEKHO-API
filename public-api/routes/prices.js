@@ -5,8 +5,6 @@ const Price = require('../services/price');
 const router = express.Router();
 const {PriceTicksModel} = require('../models');
 
-
-
 function buildDefaultPriceResponse(stockSymbol){
     return {
         "_id": "63d3cf1a9acce2ba9f960903",
@@ -50,8 +48,6 @@ function buildDefaultPriceResponse(stockSymbol){
     };
 }
 
-
-
 router.put('/', (req,res)=>{
     const priceService = new Price(req);
     return responseHandler(priceService.populateStockDetails(),res);
@@ -64,9 +60,10 @@ router.get('/', async (req,res)=>{
 });
 
 router.get('/search', async (req,res)=>{
+    const {limit = 10,skip = 0} = req.query;
     const {symbol} = req.query;
     const regex = new RegExp(symbol, 'i');
-    let data = await PriceTicksModel.find({symbol:{ $regex: regex }});
+    let data = await PriceTicksModel.find({symbol:{ $regex: regex }}).limit(limit).skip(skip);
     res.json({data})
 });
 

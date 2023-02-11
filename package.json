@@ -3,11 +3,10 @@
   "version": "1.0.0",
   "description": "Backend Api's for stocks dekho web",
   "main": "server.js",
-
   "scripts": {
     "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev" : "nodemon server.js"
+    "dev": "nodemon server.js"
   },
   "author": "Parth Sharma",
   "license": "ISC",
@@ -17,6 +16,7 @@
     "csv-parser": "^3.0.0",
     "csvtojson": "^2.0.10",
     "express": "^4.18.2",
+    "joi": "^17.7.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "mongodb": "^4.13.0",

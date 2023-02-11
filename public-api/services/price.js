@@ -1,6 +1,5 @@
 const BaseService = require('./base-service');
 const axios = require('axios');
-const moment = require('moment');
 const PriceTicksModel = require('../models/price-ticks');
 class Price extends BaseService {
   constructor(props) {
