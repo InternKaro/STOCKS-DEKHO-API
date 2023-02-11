@@ -79,6 +79,12 @@ router.get('/top-loosers', async (req,res)=>{
     res.json({data})
 });
 
+router.get('/most-active', async (req,res)=>{
+    const {limit = 8} = req.query;
+    let [niftyIndexData, ...data] = await PriceTicksModel.find({}).sort({totalTradedVolume: -1}).limit(limit);
+    res.json({data})
+});
+
 router.get('/:stockSymbol', async (req,res)=>{
     const {stockSymbol} = req.params;
     let data = await PriceTicksModel.findOne({symbol: stockSymbol}) || buildDefaultPriceResponse(stockSymbol);
