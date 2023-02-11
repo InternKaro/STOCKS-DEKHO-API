@@ -67,10 +67,23 @@ router.get('/search', async (req,res)=>{
     res.json({data})
 });
 
+router.get('/top-gainers', async (req,res)=>{
+    const {limit = 7} = req.query;
+    let data = await PriceTicksModel.find({}).sort({pChange: -1}).limit(limit);
+    res.json({data})
+});
+
+router.get('/top-loosers', async (req,res)=>{
+    const {limit = 7} = req.query;
+    let data = await PriceTicksModel.find({}).sort({pChange: 1}).limit(limit);
+    res.json({data})
+});
+
 router.get('/:stockSymbol', async (req,res)=>{
     const {stockSymbol} = req.params;
     let data = await PriceTicksModel.findOne({symbol: stockSymbol}) || buildDefaultPriceResponse(stockSymbol);
     res.json({data})
 });
+
 
 module.exports = router;
