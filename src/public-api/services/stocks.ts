@@ -1,9 +1,8 @@
-const BaseService = require('./base-service');
-const { AllStocksModel,PriceTicksModel } = require('../models');
-const populateStockDetails = require('../../scripts/populate-stock-details');
-const allStocksModel = require('../models/all-stocks-model');
+import BaseService from './base-service';
+import { AllStocksModel, PriceTicksModel } from '../models';
+import populateStockDetails from '../../scripts/populate-stock-details';
 
-class Stocks extends BaseService{
+export default class Stocks extends BaseService{
     constructor(props){
         super(props);
     }
@@ -13,7 +12,7 @@ class Stocks extends BaseService{
         return {stockDetails};
     }
     async getAllStocksDetails(){
-        const {limit = 10,skip = 0} = this.query;
+        const {limit = 10,skip = 0} = this.query as { limit: number,skip: number };
         const allStocks = await AllStocksModel.find({}).limit(limit).skip(skip);
         return { allStocks };
     }
@@ -39,4 +38,3 @@ class Stocks extends BaseService{
         return {result: 'OK'};
     }
 }
-module.exports = Stocks;

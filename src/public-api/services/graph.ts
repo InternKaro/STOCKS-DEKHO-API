@@ -1,8 +1,8 @@
-const BaseService = require('./base-service');
-const axios = require('axios');
-const moment = require('moment');
-const { parseCSVFromURL } = require('../../toolbox/helpers');
-class Graph extends BaseService {
+import BaseService from './base-service';
+
+import moment from 'moment';
+import { parseCSVFromURL } from '../../toolbox/helpers';
+export default class Graph extends BaseService {
   constructor(props) {
     super(props);
   }
@@ -26,4 +26,4 @@ class Graph extends BaseService {
     };
   }
 }
-module.exports = Graph;
+

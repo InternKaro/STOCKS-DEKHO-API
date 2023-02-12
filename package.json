@@ -4,13 +4,24 @@
   "description": "Backend Api's for stocks dekho web",
   "main": "server.js",
   "scripts": {
-    "start": "node src/server.js",
+    "build": "tsc",
+    "start": "npm run build && node built/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/server.js"
+    "dev": "npm run build && nodemon built/server.js"
   },
   "author": "Parth Sharma",
   "license": "ISC",
   "dependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.17",
+    "@types/jsonwebtoken": "^9.0.1",
+    "@types/lodash": "^4.14.191",
+    "@types/moment": "^2.13.0",
+    "@types/mongodb": "^4.0.7",
+    "@types/mongoose": "^5.11.97",
+    "@types/request": "^2.48.8",
     "axios": "^1.2.3",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",

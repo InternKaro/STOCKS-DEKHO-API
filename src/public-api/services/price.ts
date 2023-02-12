@@ -1,11 +1,14 @@
-const BaseService = require('./base-service');
-const axios = require('axios');
-const PriceTicksModel = require('../models/price-ticks');
-class Price extends BaseService {
+import BaseService from './base-service';
+import axios from 'axios';
+import PriceTicksModel from '../models/price-ticks';
+export default class Price extends BaseService {
   constructor(props) {
     super(props);
   }
-  config = {
+  config:{
+    headers: Record<string,string>,
+    method: string,
+  } = {
     "headers": {
     },
     "method": "GET"
@@ -25,4 +28,3 @@ class Price extends BaseService {
 };
 
 }
-module.exports = Price;

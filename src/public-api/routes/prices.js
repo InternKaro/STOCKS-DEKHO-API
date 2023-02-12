@@ -55,7 +55,7 @@ router.put('/', (req,res)=>{
 
 router.get('/', async (req,res)=>{
     const {limit = 10,skip = 0} = req.query;
-    const data = await PriceTicksModel.find({}).limit(limit).skip(skip);
+    const data = await PriceTicksModel.find({}).limit(parseInt(limit)).skip(parseInt(skip));
     res.json({data})
 });
 
@@ -63,25 +63,25 @@ router.get('/search', async (req,res)=>{
     const {limit = 10,skip = 0} = req.query;
     const {symbol} = req.query;
     const regex = new RegExp(symbol, 'i');
-    let data = await PriceTicksModel.find({symbol:{ $regex: regex }}).limit(limit).skip(skip);
+    let data = await PriceTicksModel.find({symbol:{ $regex: regex }}).limit(parseInt(limit)).skip(parseInt(skip));
     res.json({data})
 });
 
 router.get('/top-gainers', async (req,res)=>{
     const {limit = 7} = req.query;
-    let data = await PriceTicksModel.find({}).sort({pChange: -1}).limit(limit);
+    let data = await PriceTicksModel.find({}).sort({pChange: -1}).limit(parseInt(limit));
     res.json({data})
 });
 
 router.get('/top-loosers', async (req,res)=>{
     const {limit = 7} = req.query;
-    let data = await PriceTicksModel.find({}).sort({pChange: 1}).limit(limit);
+    let data = await PriceTicksModel.find({}).sort({pChange: 1}).limit(parseInt(limit));
     res.json({data})
 });
 
 router.get('/most-active', async (req,res)=>{
     const {limit = 8} = req.query;
-    let [niftyIndexData, ...data] = await PriceTicksModel.find({}).sort({totalTradedVolume: -1}).limit(limit);
+    let [niftyIndexData, ...data] = await PriceTicksModel.find({}).sort({totalTradedVolume: -1}).limit(parseInt(limit));
     res.json({data})
 });
 
