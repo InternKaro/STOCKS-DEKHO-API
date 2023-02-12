@@ -19,3 +19,12 @@ app.get('/',(req,res)=>{
 app.listen(port,()=>{
     console.log(`Server started on ${port}`)
 });
+
+// https://www.nseindia.com/api/corporates-corporateActions?index=equities
+// INDEX( https://www.nseindia.com/api/equity-stockIndices?index=NIFTY AUTO )
+// NIFTY AUTO
+// NIFTY FINANCIAL SERVICES
+// NIFTY BANK
+// NIFTY ENERGY
+// NIFTY FMCG
+// NIFTY IT, MEDIA, METAL,PHARMA,REALTY,HEALTHCARE INDEX, OIL & GAS
