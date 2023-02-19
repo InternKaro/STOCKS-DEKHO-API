@@ -4,8 +4,9 @@ const mongoose = require('mongoose');
     mongoose.set('strictQuery', false);
     try {
       await mongoose.connect(uri);
+      console.log("Mongo Connected");
     } catch (error) {
       throw new Error(error);
     }
-    console.log("Mongo Connected");
+
 })();
