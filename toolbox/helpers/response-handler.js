@@ -3,8 +3,17 @@ async function responseHandler(arg,res){
     try {
         response = await arg;
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({message: error.message || 'Something Wrong'});
+        console.log(error.message);
+        let message = 'Something Wrong';
+        let code = 500;
+        try {
+            message = JSON.parse(error?.message)?.statement;
+            code = JSON.parse(error?.message)?.code;
+        } catch (e) {
+            message = error?.message || message;
+            code =  message.code || code;
+        }
+        return res.status(code).json({message});
     }
     return res.json(response)
 }
