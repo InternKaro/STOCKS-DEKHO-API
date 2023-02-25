@@ -1,5 +1,4 @@
 const BaseService = require('./base-service');
-const axios = require('axios');
 const BaseRequestService = require('../../toolbox/helpers/request-service/base-request-service');
 const allStocksModel = require('../models/all-stocks-model');
 
