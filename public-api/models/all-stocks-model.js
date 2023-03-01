@@ -6,6 +6,7 @@ const AllStocksSchema = new Schema({
     name: String,
     listingDate: String,
     meta: Object,
+    icon: String,
 });
 
 module.exports = mongoose.model("Stocks", AllStocksSchema);

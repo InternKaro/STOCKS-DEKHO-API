@@ -3,7 +3,7 @@ const express = require('express');
 const responseHandler = require('../../toolbox/helpers/response-handler');
 const Price = require('../services/price');
 const router = express.Router();
-const {PriceTicksModel} = require('../models');
+const {PriceTicksModel, AllStocksModel} = require('../models');
 
 function buildDefaultPriceResponse(stockSymbol){
     return {
@@ -55,8 +55,16 @@ router.put('/', (req,res)=>{
 
 router.get('/', async (req,res)=>{
     const {limit = 10,skip = 0} = req.query;
-    const data = await PriceTicksModel.find({}).limit(limit).skip(skip);
-    res.json({data})
+    const [data,iconPromises] = await Promise.all([PriceTicksModel.find({}).limit(limit).skip(skip), AllStocksModel.find({})]);
+    const stockSymbolToIcon = {};
+    iconPromises.forEach((stock)=>{
+        stockSymbolToIcon[stock.symbol.toLowerCase()] = stock.icon;
+    });
+    const ans = [];
+    data.forEach((stock)=>{
+        ans.push({...stock._doc, icon: stockSymbolToIcon[stock.symbol.toLowerCase()]});
+    });
+    res.json({data: ans})
 });
 
 router.get('/search', async (req,res)=>{
