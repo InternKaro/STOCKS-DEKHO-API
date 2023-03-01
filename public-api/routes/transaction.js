@@ -15,4 +15,9 @@ router.post('/review/sell',(req,res)=>{
     return responseHandler(transactionService.reviewSell(),res);
 })
 
+router.post('/buy',(req,res)=>{
+    const transactionService = new Transactions(req);
+    return responseHandler(transactionService.buy(),res);
+})
+
 module.exports = router;
