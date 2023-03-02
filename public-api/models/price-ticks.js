@@ -20,6 +20,7 @@ const PriceTicksSchema = new Schema({
     nearWKL: Number,
     perChange365d: String,
     perChange30d: String,
+    icon: String,
     meta: Object,
   });
 
