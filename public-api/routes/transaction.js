@@ -26,4 +26,9 @@ router.post('/buy',(req,res)=>{
     return responseHandler(transactionService.buy(),res);
 })
 
+router.get('/history/:userId',(req,res)=>{
+    const transactionService = new Transactions(req);
+    return responseHandler(transactionService.history(),res); 
+})
+
 module.exports = router;
