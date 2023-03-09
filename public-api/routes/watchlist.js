@@ -11,4 +11,9 @@ router.put('/',(req,res)=>{
     return responseHandler(watchlistService.addSymbolToWatchlist(),res);
 })
 
+router.get('/:userId',(req,res)=>{
+    const watchlistService = new Watchlist(req);
+    return responseHandler(watchlistService.getWatchlist(),res);
+})
+
 module.exports = router;
