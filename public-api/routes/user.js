@@ -1,11 +1,11 @@
 const express = require('express');
-const Graph = require('../services/graph');
+const User = require('../services/user');
 const responseHandler = require('../../toolbox/helpers/response-handler');
 const router = express.Router();
 
-router.get('/', (req,res)=>{
-    const graphService = new Graph(req);
-    return responseHandler(graphService.priceHistory(),res)
+router.post('/signup', (req,res)=>{
+    const userService = new User(req);
+    return responseHandler(userService.signup(),res)
 });
 
 

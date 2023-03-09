@@ -8,9 +8,9 @@ class Graph extends BaseService {
   }
 
   async priceHistory() {
-    const { stockSymbol } = this.params;
+    const { stockSymbol, timeframe } = this.query;
     const from = moment()
-      .subtract(2, 'years')
+      .subtract(timeframe, 'days')
       .subtract(1, 'day')
       .format('DD-MM-YYYY');
     const to = moment().format('DD-MM-YYYY');
