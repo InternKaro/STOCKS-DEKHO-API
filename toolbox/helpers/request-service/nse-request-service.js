@@ -20,7 +20,14 @@ class NSERequestService extends BaseRequestService{
       this.headers.cookie = NSERequestService.session.headers['set-cookie'].join(';');
     }
     async get(uri){
-        const response = await super.get(uri,{headers:this.headers});
+        let response;
+        try {
+            response = await super.get(uri,{headers:this.headers});
+        } catch (error) {
+            console.log(error);
+            await this.createSession();
+            throw new Error(error);
+        }
         return response.data;
     }
 };
