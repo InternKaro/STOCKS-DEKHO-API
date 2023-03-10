@@ -93,6 +93,11 @@ class Price extends BaseService {
 
   async history(){
     const {userId} = this.params;
+    const {stockSymbol} = this.query;
+    if(stockSymbol){
+      const stockTransactions = await TransactionLogsModel.find({userId,stockSymbol}).sort({createdAt:-1});
+      return {stockTransactions};
+    }
     const allTransactions = await TransactionLogsModel.find({userId}).sort({createdAt:-1});
     return {allTransactions};
   }
