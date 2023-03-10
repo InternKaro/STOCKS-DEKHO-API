@@ -10,9 +10,9 @@ class NSERequestService extends BaseRequestService{
         }
     };
     async init(){
-        if(NSERequestService.session){
-            return;
-        }
+        // if(NSERequestService.session){
+        //     return;
+        // }
         await this.createSession();
     }
     async createSession(){
@@ -22,10 +22,10 @@ class NSERequestService extends BaseRequestService{
     async get(uri){
         let response;
         try {
+            await this.createSession();
             response = await super.get(uri,{headers:this.headers});
         } catch (error) {
             console.log(error);
-            await this.createSession();
             throw new Error(error);
         }
         return response.data;
