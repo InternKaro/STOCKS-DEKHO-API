@@ -2,6 +2,7 @@ const BaseService = require('./base-service');
 const axios = require('axios');
 const moment = require('moment');
 const { WatchlistModel } = require('../models');
+const { watch } = require('../models/all-stocks-model');
 
 
 class Watchlist extends BaseService {
@@ -26,6 +27,19 @@ class Watchlist extends BaseService {
       const {userId} = this.params;
       const watchlist = await WatchlistModel.findOne({userId});
       return {watchlist:watchlist.stockSymbols};
+  }
+
+  async deleteWatchlist(stockSymbol){
+    const {userId} = this.params;
+    const {watchlist} = await this.getWatchlist();
+    // console.log(watchlist);
+    const result = watchlist.filter((symbol)=>symbol!=stockSymbol);
+    console.log(result);
+    await WatchlistModel.deleteOne({userId:userId.toString()});
+   const data = await WatchlistModel.create({stockSymbols:[...result],userId});
+
+    return {Status: "OK"};
+
   }
 }
 module.exports = Watchlist;

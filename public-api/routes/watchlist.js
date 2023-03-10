@@ -16,4 +16,9 @@ router.get('/:userId',(req,res)=>{
     return responseHandler(watchlistService.getWatchlist(),res);
 })
 
+router.put('/:userId',(req,res)=>{
+    const watchlistService = new Watchlist(req);
+    return responseHandler(watchlistService.deleteWatchlist(req.body.stockSymbol),res);
+})
+
 module.exports = router;
