@@ -5,6 +5,7 @@ const TransactionLogsSchema = new Schema({
     userId: String, 
     stockSymbol: String, 
     orderAmount: Number,
+    quantity: Number,
     type: {type: String, enum: ['BUY','SELL'], required: true},
   },
   {
