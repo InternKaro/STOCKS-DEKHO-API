@@ -12,12 +12,12 @@ class Portfolio extends BaseService{
         const stockSymbolsHeld = Object.keys(holdings);
         let currentPriceTicks = await PriceTicksModel.find({symbol:{$in:stockSymbolsHeld}});
         currentPriceTicks = currentPriceTicks.reduce(
-        (acc, priceTick) => {return {...acc, [priceTick.symbol]: priceTick.lastPrice}},
+        (acc, priceTick) => {return {...acc, [priceTick.symbol]: priceTick}},
         {}
         );
         const response = [];
         Object.keys(holdings).forEach(symbol => {
-            response.push({stockSymbol: symbol,quantity: holdings[symbol], value: (currentPriceTicks[symbol]*parseInt(holdings[symbol])).toFixed(2)});
+            response.push({stockSymbol: symbol,quantity: holdings[symbol], value: (currentPriceTicks[symbol].lastPrice*parseInt(holdings[symbol])).toFixed(2),stockDetails: currentPriceTicks[symbol]});
         });
         return { holdings: response };
     }
