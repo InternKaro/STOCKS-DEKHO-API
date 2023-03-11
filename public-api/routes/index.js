@@ -7,6 +7,7 @@ const userRouter = require('./user');
 const transactionRouter = require('./transaction');
 const watchlistRouter = require('./watchlist');
 const portfolioRouter = require('./portfolio');
+const walletRouter = require('./wallet');
 
 const router = express.Router();
 router.use('/graph', graphRouter);
@@ -17,5 +18,6 @@ router.use('/user',userRouter);
 router.use('/transaction',transactionRouter);
 router.use('/watchlist',watchlistRouter);
 router.use('/portfolio',portfolioRouter);
+router.use('/wallet',walletRouter);
 
 module.exports = router;
