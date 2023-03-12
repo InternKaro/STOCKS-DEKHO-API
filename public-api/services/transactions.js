@@ -11,6 +11,7 @@ class Price extends BaseService {
   }
 
   async updateHoldings(userId,stockSymbol,quantity, buy){
+    quantity = parseInt(quantity);
     let holdings = await HoldingsModel.findOne({ userId });
     if (!holdings) {
         holdings = new HoldingsModel({ userId });
