@@ -1,7 +1,7 @@
 const BaseService = require('./base-service');
-const axios = require('axios');
 const moment = require('moment');
 const { parseCSVFromURL } = require('../../toolbox/helpers');
+const LocalCache = require('../../toolbox/local-cache');
 class Graph extends BaseService {
   constructor(props) {
     super(props);
@@ -17,7 +17,14 @@ class Graph extends BaseService {
     const url = `https://www.nseindia.com/api/historical/cm/equity?symbol=${stockSymbol}&series=[%22EQ%22]&from=${from}&to=${to}&csv=true`;
     let parsedData = [];
     try {
+      const cache = new LocalCache();
+      if(cache.get(url)){
+        return {
+          data: cache.get(url),
+        }
+      }
       parsedData = await parseCSVFromURL(url);
+      cache.set(url,parsedData);
     } catch (error) {
       console.log(error);
     }
