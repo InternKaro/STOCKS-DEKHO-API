@@ -42,9 +42,9 @@ class Price extends BaseService {
   }
 
   async checkIfValidSellOrder(transactionData){
-    const {userHoldings,quantity} = transactionData;
-    if(! userHoldings || userHoldings.holdings < quantity){
-      throw new BadRequest(`You have maximum ${ userHoldings && userHoldings.holdings} holdings`);
+    const {userHoldings,quantity,stockSymbol} = transactionData;
+    if(! userHoldings || userHoldings.holdings[stockSymbol] < quantity){
+      throw new BadRequest(`You have maximum ${ userHoldings && userHoldings.holdings[stockSymbol]} holdings`);
     }
   }
 
@@ -81,7 +81,7 @@ class Price extends BaseService {
     if(!userBalance){
       throw new BadRequest(`UserBalance entry not found for ${userId}`);
     }
-    await this.checkIfValidSellOrder({userHoldings,quantity});
+    await this.checkIfValidSellOrder({userHoldings,quantity,stockSymbol});
     return {orderAmount: await this.calculateSellOrderAmount(stockCurrentPrice,quantity), quantity,stockSymbol }
   };
 
