@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors')
 const routes = require('./public-api/routes');
 require('./scripts/mongo-setup');
+require('./scripts/cron-jobs');
 const app = express();
 const port = process.env.PORT || 8000;
 
