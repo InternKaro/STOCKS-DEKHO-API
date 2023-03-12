@@ -6,5 +6,8 @@ class LocalCache {
     set(key,value){
         LocalCache.objectStore[key] = value;
     }
+    evict(){
+        LocalCache.objectStore = {};
+    }
 }
 module.exports = LocalCache;
