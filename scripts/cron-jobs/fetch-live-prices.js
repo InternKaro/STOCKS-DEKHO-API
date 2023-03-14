@@ -1,4 +1,11 @@
-const populateStockDetails = require('../populate-stock-details');
+// const populateStockDetails = require('../populate-stock-details');
+const PriceService = require('../../public-api/services/price')
 module.exports = async ()=>{
-    await populateStockDetails();
+    try {
+        const priceServiceInstance = new PriceService({})
+        await priceServiceInstance.populateStockDetails();
+    } catch (error) {
+        console.log(error)
+    }
+   
 };
