@@ -31,6 +31,8 @@ class Price extends BaseService {
             icon: `https://assets-netstorage.groww.in/stock-assets/logos/GSTK${stockSymbolToCode[stock.symbol]}.png`
           }
         });
+        console.log('inserting');
+        
         await PriceTicksModel.insertMany(stockData);
         return{d: 'Done'};
     } catch (error) {
