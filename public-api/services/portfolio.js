@@ -15,11 +15,13 @@ class Portfolio extends BaseService{
         (acc, priceTick) => {return {...acc, [priceTick.symbol]: priceTick}},
         {}
         );
+        let portfolio_value = 0
         const response = [];
         Object.keys(holdings).forEach(symbol => {
+            portfolio_value+= (currentPriceTicks[symbol].lastPrice*parseInt(holdings[symbol]))
             response.push({stockSymbol: symbol,quantity: holdings[symbol], value: (currentPriceTicks[symbol].lastPrice*parseInt(holdings[symbol])).toFixed(2),stockDetails: currentPriceTicks[symbol]});
         });
-        return { holdings: response };
+        return { holdings: response , portfolio_value:portfolio_value  };
     }
 }
 
