@@ -5,7 +5,7 @@ const cronJobs = [
     {
         name: 'fetch-live-prices',
         callback: FetchLivePrices,
-        schedule: '* * * * *'
+        schedule: '*/15 * * * *'
     },
     {
         name:'evict-local-cache',

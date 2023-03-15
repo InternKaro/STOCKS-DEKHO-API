@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const PriceTicksSchema = new Schema({
-    symbol: String,
+    symbol: {type: String, unique: true},
     open: Number,
     dayHigh: Number,
     dayLow: Number,
