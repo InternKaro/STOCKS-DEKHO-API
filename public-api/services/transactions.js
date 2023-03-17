@@ -22,8 +22,9 @@ class Price extends BaseService {
   }
   
 
-  async calculateBuyOrderAmount(stockCurrentPrice, quantity){
-    return (stockCurrentPrice * quantity * (100 + this.buySpreadPercentage))/100;
+  calculateBuyOrderAmount(stockCurrentPrice, quantity){
+    const val =(stockCurrentPrice * quantity * (100 + this.buySpreadPercentage))/100;
+    return val;
   }
 
   async calculateSellOrderAmount(stockCurrentPrice, quantity){
@@ -36,7 +37,8 @@ class Price extends BaseService {
 
   async checkIfValidBuyOrder(transactionData){
     const {userBalance,stockCurrentPrice,quantity} = transactionData;
-    if(this.calculateBuyOrderAmount(stockCurrentPrice,quantity) > userBalance){
+    const val = this.calculateBuyOrderAmount(stockCurrentPrice,quantity)
+    if( val > userBalance){
       throw new BadRequest('You don`t have enough balance');
     }
   }
@@ -94,12 +96,13 @@ class Price extends BaseService {
 
   async history(){
     const {userId} = this.params;
-    const {stockSymbol} = this.query;
-    if(stockSymbol){
-      const stockTransactions = await TransactionLogsModel.find({userId,stockSymbol}).sort({createdAt:-1});
-      return {stockTransactions};
+    const {stockSymbol , type} = this.query;
+    if (type!='BUY' || type!= 'SELL'){
+      throw new BadRequest("support only BUY/SELL type")
     }
-    const allTransactions = await TransactionLogsModel.find({userId}).sort({createdAt:-1});
+    const filters = {userId , ...stockSymbol?{stockSymbol}:{} , ...type?{type}:{} }
+    
+    const allTransactions = await TransactionLogsModel.find(filters).sort({createdAt:-1});
     return {allTransactions};
   }
   
