@@ -23,22 +23,16 @@ class Price extends BaseService {
   
 
   calculateBuyOrderAmount(stockCurrentPrice, quantity){
-    const val =(stockCurrentPrice * quantity * (100 + this.buySpreadPercentage))/100;
-    return val;
+    return (stockCurrentPrice * quantity * (100 + this.buySpreadPercentage))/100;
   }
 
-  async calculateSellOrderAmount(stockCurrentPrice, quantity){
-    return (stockCurrentPrice * quantity * (100 + this.sellSpreadPercentage))/100;
-  }
-
-  async calculateSellOrderAmount(stockCurrentPrice, quantity){
+  calculateSellOrderAmount(stockCurrentPrice, quantity){
     return (stockCurrentPrice * quantity * (100 + this.sellSpreadPercentage))/100;
   }
 
   async checkIfValidBuyOrder(transactionData){
     const {userBalance,stockCurrentPrice,quantity} = transactionData;
-    const val = this.calculateBuyOrderAmount(stockCurrentPrice,quantity)
-    if( val > userBalance){
+    if(this.calculateBuyOrderAmount(stockCurrentPrice,quantity) > userBalance){
       throw new BadRequest('You don`t have enough balance');
     }
   }
@@ -62,7 +56,7 @@ class Price extends BaseService {
       throw new BadRequest(`UserBalance entry not found for ${userId}`);
     }
     await this.checkIfValidBuyOrder({userBalance,stockCurrentPrice,quantity});
-    return {orderAmount: await this.calculateBuyOrderAmount(stockCurrentPrice,quantity), quantity,stockSymbol }
+    return {orderAmount: this.calculateBuyOrderAmount(stockCurrentPrice,quantity), quantity,stockSymbol }
   };
 
   async buy() {
@@ -84,7 +78,7 @@ class Price extends BaseService {
       throw new BadRequest(`UserBalance entry not found for ${userId}`);
     }
     await this.checkIfValidSellOrder({userHoldings,quantity,stockSymbol});
-    return {orderAmount: await this.calculateSellOrderAmount(stockCurrentPrice,quantity), quantity,stockSymbol }
+    return {orderAmount: this.calculateSellOrderAmount(stockCurrentPrice,quantity), quantity,stockSymbol }
   };
 
   async sell() {

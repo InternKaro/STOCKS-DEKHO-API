@@ -1,7 +1,6 @@
 const BaseService = require('./base-service');
-const { AllStocksModel,PriceTicksModel } = require('../models');
+const { AllStocksModel,PriceTicksModel, SectorModel } = require('../models');
 const populateStockDetails = require('../../scripts/populate-stock-details');
-const allStocksModel = require('../models/all-stocks-model');
 
 class Stocks extends BaseService{
     constructor(props){
@@ -37,6 +36,32 @@ class Stocks extends BaseService{
         const  symbolsToBeDeleted = symbolsFromAllStocksTable.filter( symbol=> ! symbolsFromPriceTable.includes(symbol) )
         await AllStocksModel.deleteMany({symbol: { $in: symbolsToBeDeleted }});
         return {result: 'OK'};
+    }
+    
+    async getAllSectors(){
+        const sectorData = await SectorModel.find({});
+        const response = sectorData.map((sector)=>{
+            return {
+                name: sector.name,
+                total: sector.stocks.length - 1,
+            }
+        })
+        return {data: response};
+    }
+
+    async getAllStocksBySector(){
+        const { sector } = this.params;
+        const sectorDetails = await SectorModel.findOne({name: sector});
+        const [index,...stockSymbolsInSector] = sectorDetails.stocks;
+        let currentPriceTicks = await PriceTicksModel.find({symbol:{$in:stockSymbolsInSector}});
+        currentPriceTicks = currentPriceTicks.reduce(
+        (acc, priceTick) => {return {...acc, [priceTick.symbol]: priceTick}},
+        {}
+        );
+        const response = stockSymbolsInSector.map(symbol => {
+            return {symbol,stockData: currentPriceTicks[symbol]};
+        });
+        return { data: response  };
     }
 }
 module.exports = Stocks;

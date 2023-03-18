@@ -13,6 +13,16 @@ router.get('/all', async(req,res)=>{
     return responseHandler(stocksService.getAllStocksDetails(),res);
 });
 
+router.get('/sectors', async(req,res) =>{
+    const stocksService = new Stocks(req);
+    return responseHandler(stocksService.getAllSectors(),res);
+});
+
+router.get('/sectors/:sector', async(req,res) =>{
+    const stocksService = new Stocks(req);
+    return responseHandler(stocksService.getAllStocksBySector(),res);
+});
+
 router.get('/:stockSymbol', async(req,res)=>{
     const stocksService = new Stocks(req);
     return responseHandler(stocksService.getStockDetails(),res);
@@ -22,5 +32,6 @@ router.delete('/inActiveStocks', async(req,res) =>{
     const stocksService = new Stocks(req);
     return responseHandler(stocksService.deleteInActiveStocks(),res);
 });
+
 
 module.exports = router;
