@@ -2,7 +2,7 @@ const express = require('express');
 const responseHandler = require('../../toolbox/helpers/response-handler');
 const router = express.Router();
 const Stocks = require('../services/stocks');
-
+const addHistoricalData = require("..//..//scripts//add-historical-data")
 router.put('/', async(req,res)=>{
     const stocksService = new Stocks(req);
     return responseHandler(stocksService.insertAllStocks(),res);
@@ -18,6 +18,10 @@ router.get('/sectors', async(req,res) =>{
     return responseHandler(stocksService.getAllSectors(),res);
 });
 
+router.post('/postData' ,async(req ,res)=>{
+  
+    return responseHandler(addHistoricalData() , res)
+} )
 router.get('/sectors/:sector', async(req,res) =>{
     const stocksService = new Stocks(req);
     return responseHandler(stocksService.getAllStocksBySector(),res);
