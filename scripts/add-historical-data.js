@@ -38,10 +38,12 @@ const addHistoricalData=async()=>{
     
     const response = await priceHistory({stockSymbol:"INFY" ,timeframe:730})
     // await set(reference,response)
+    const data = JSON.stringify(response.data);
     for (i=0 ; i<response.data.length;i++){
         console.log(response.data[i]['Date '])
         await push(reference , {Date:response.data[i]['Date '] , price:response.data[i]['PREV. CLOSE '] });
     }
+    // await push(reference , data);
     return response.data
 }
 

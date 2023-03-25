@@ -1,7 +1,8 @@
 const BaseService = require('./base-service');
 const { AllStocksModel,PriceTicksModel, SectorModel } = require('../models');
 const populateStockDetails = require('../../scripts/populate-stock-details');
-
+const app  =require("../../scripts/firebase")
+const { getDatabase ,ref , push , get, onValue} = require('firebase/database');
 class Stocks extends BaseService{
     constructor(props){
         super(props);
@@ -62,6 +63,20 @@ class Stocks extends BaseService{
             return {symbol,stockData: currentPriceTicks[symbol]};
         });
         return { data: response  };
+    }
+
+    async getHistoricalData(){
+        console.log('get')
+        const db = getDatabase(app);
+        const reference = ref(db , 'StockHistoricalData/INFY')
+        let data;
+        onValue( reference , (snapshot)=>{
+            data = snapshot.val()
+            console.log(snapshot.val())
+            return {data}
+        })
+        
+        return {data}
     }
 }
 module.exports = Stocks;

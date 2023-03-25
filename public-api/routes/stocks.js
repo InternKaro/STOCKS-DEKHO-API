@@ -22,6 +22,11 @@ router.post('/postData' ,async(req ,res)=>{
   
     return responseHandler(addHistoricalData() , res)
 } )
+
+router.get('/getData' ,async(req ,res)=>{
+    const stocksService = new Stocks(req);
+    return responseHandler(stocksService.getHistoricalData() , res)
+} )
 router.get('/sectors/:sector', async(req,res) =>{
     const stocksService = new Stocks(req);
     return responseHandler(stocksService.getAllStocksBySector(),res);
