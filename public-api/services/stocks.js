@@ -62,21 +62,21 @@ class Stocks extends BaseService{
         const response = stockSymbolsInSector.map(symbol => {
             return {symbol,stockData: currentPriceTicks[symbol]};
         });
-        return { data: response  };
+        return { data: response };
     }
 
     async getHistoricalData(){
-        console.log('get')
         const db = getDatabase(app);
         const reference = ref(db , 'StockHistoricalData/INFY')
         let data;
-        onValue( reference , (snapshot)=>{
+        await new Promise(resolve => {
+        onValue(reference, (snapshot) => {
             data = snapshot.val()
             console.log(snapshot.val())
-            return {data}
+            resolve();
         })
-        
-        return {data}
+      })
+        return {data: JSON.parse(...Object.values(data))};
     }
 }
 module.exports = Stocks;
