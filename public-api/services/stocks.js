@@ -1,8 +1,7 @@
 const BaseService = require('./base-service');
 const { AllStocksModel,PriceTicksModel, SectorModel } = require('../models');
 const populateStockDetails = require('../../scripts/populate-stock-details');
-const app  =require("../../scripts/firebase")
-const { getDatabase ,ref , push , get, onValue} = require('firebase/database');
+const { FirebaseAccessors } = require('../db/firebase/accessors');
 class Stocks extends BaseService{
     constructor(props){
         super(props);
@@ -62,24 +61,14 @@ class Stocks extends BaseService{
         const response = stockSymbolsInSector.map(symbol => {
             return {symbol,stockData: currentPriceTicks[symbol]};
         });
-        return { data: response  };
+        return { data: response };
     }
 
     async getHistoricalData(){
-        console.log('get')
-        const db = getDatabase(app);
-        const reference = ref(db , 'StockHistoricalData')
-        let data;
-        // onValue( reference , (snapshot)=>{
-        //     data = snapshot.val()
-        //     console.log(snapshot.val())
-        //     return {data}
-        // })
-        return get(reference).then(snapshot=>{
-            return {data:snapshot.val()}
-        })
-        
-        return {data}
+        const { symbol } = this.params;
+        const firebaseAccessors = new FirebaseAccessors();
+        let data = await firebaseAccessors.getHistoricalData(symbol);
+        return data;
     }
 }
 module.exports = Stocks;

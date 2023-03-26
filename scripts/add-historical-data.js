@@ -1,10 +1,8 @@
-const app  =require("./firebase")
-const {getAuth} = require("firebase/auth")
 const moment = require('moment');
 const { parseCSVFromURL } = require('../toolbox/helpers');
-const { getDatabase ,ref , push} = require('firebase/database');
+const { FirebaseAccessors }  = require('../public-api/db/firebase/accessors');
+const stockList = require('../toolbox/stock-list');
 
-const LocalCache = require('../toolbox/local-cache');
 async function priceHistory(query) {
     const { stockSymbol, timeframe } = query;
     const from = moment()
@@ -15,14 +13,7 @@ async function priceHistory(query) {
     const url = `https://www.nseindia.com/api/historical/cm/equity?symbol=${stockSymbol}&series=[%22EQ%22]&from=${from}&to=${to}&csv=true`;
     let parsedData = [];
     try {
-      const cache = new LocalCache();
-      if(cache.get(url)){
-        return {
-          data: cache.get(url),
-        }
-      }
       parsedData = await parseCSVFromURL(url);
-      cache.set(url,parsedData);
     } catch (error) {
       console.log(error);
     }
@@ -31,20 +22,12 @@ async function priceHistory(query) {
     };
   }
 const addHistoricalData=async()=>{
-
-    const db = getDatabase(app);
-    const reference = ref(db , 'StockHistoricalData/INFY')
-
-    
-    const response = await priceHistory({stockSymbol:"INFY" ,timeframe:730})
-    // await set(reference,response)
-    const data = JSON.stringify(response.data);
-    for (i=0 ; i<response.data.length;i++){
-        console.log(response.data[i]['Date '])
-        await push(reference , {Date:response.data[i]['Date '] , price:response.data[i]['PREV. CLOSE '] });
+    const firebaseAccessors = new FirebaseAccessors();
+    for(const symbol of stockList){
+      const response = await priceHistory({stockSymbol:symbol ,timeframe:730});
+      const data = response.data;
+      await firebaseAccessors.setHistoricalData(symbol,data);
     }
-    // await push(reference , data);
-    return response.data
 }
 
 module.exports= addHistoricalData;
