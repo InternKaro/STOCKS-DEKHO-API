@@ -26,14 +26,14 @@ class Graph extends BaseService {
   }
 
   async priceHistory() {
-    const { stockSymbol } = this.query;
+    const { stockSymbol, timeFrame } = this.query;
     const firebaseAccessors = new FirebaseAccessors();
     let data = await firebaseAccessors.getHistoricalData(stockSymbol);
     if(!data){
       data = await this.fetchHistoricalDataFromNSE();
       await firebaseAccessors.setHistoricalData(stockSymbol,data);
     }
-    return { data };
+    return { data: data.slice(0,timeFrame) };
   }
 }
 module.exports = Graph;
