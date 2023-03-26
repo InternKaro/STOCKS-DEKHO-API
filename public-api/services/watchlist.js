@@ -23,10 +23,18 @@ class Watchlist extends BaseService {
    const data = await WatchlistModel.create({stockSymbols:[ ...new Set(existingWatchlistSymbols) ],userId});
    return {data};
 }
-    async getWatchlist(){
+  async getWatchlist(){
       const {userId} = this.params;
       const watchlist = await WatchlistModel.findOne({userId});
       return {watchlist:watchlist.stockSymbols};
+  }
+
+  async checkInWatchList(){
+    const {userId} = this.params;
+    const {stockSymbol} = this.query
+    const watchlist = await WatchlistModel.findOne({userId })
+    const result = watchlist.stockSymbols.filter((symbol)=>symbol==stockSymbol);
+    return result.length>0?true:false
   }
 
   async deleteWatchlist(stockSymbol){

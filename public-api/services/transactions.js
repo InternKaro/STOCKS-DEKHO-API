@@ -90,8 +90,12 @@ class Price extends BaseService {
 
   async history(){
     const {userId} = this.params;
-    const {stockSymbol , type} = this.query;
-    if (type!='BUY' || type!= 'SELL'){
+    let {stockSymbol , type} = this.query;
+    if(type == null){
+      type ="";
+    }
+    // type= sell
+    if (type!='BUY' && type!= 'SELL' && type!="" ){
       throw new BadRequest("support only BUY/SELL type")
     }
     const filters = {userId , ...stockSymbol?{stockSymbol}:{} , ...type?{type}:{} }
