@@ -90,17 +90,9 @@ class Price extends BaseService {
 
   async history(){
     const {userId} = this.params;
-    let {stockSymbol , type} = this.query;
-    if(type == null){
-      type ="";
-    }
-    // type= sell
-    if (type!='BUY' && type!= 'SELL' && type!="" ){
-      throw new BadRequest("support only BUY/SELL type")
-    }
-    const filters = {userId , ...stockSymbol?{stockSymbol}:{} , ...type?{type}:{} }
-    
-    const allTransactions = await TransactionLogsModel.find(filters).sort({createdAt:-1});
+    let { stockSymbol , type } = this.query;
+    const filters = { userId , ...stockSymbol?{stockSymbol}:{} , ...type?{type}:{} }
+    const allTransactions = await TransactionLogsModel.find(filters).sort({ createdAt:-1 });
     return {allTransactions};
   }
   
