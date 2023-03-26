@@ -85,7 +85,7 @@ class Price extends BaseService {
     const { userId, stockSymbol, orderAmount,quantity } = this.body;
     const balanceEntry = await BalanceModel.findOne({ userId });
     const {balance: currentBalance} = balanceEntry;
-    return await Promise.all([ BalanceModel.updateOne({ userId }, { $set:  { balance : parseFloat(currentBalance) + parseFloat(orderAmount) } }), TransactionLogsModel.create({userId, stockSymbol, orderAmount, type: 'BUY',quantity}), await this.updateHoldings(userId, stockSymbol, quantity,false)]);
+    return await Promise.all([ BalanceModel.updateOne({ userId }, { $set:  { balance : parseFloat(currentBalance) + parseFloat(orderAmount) } }), TransactionLogsModel.create({userId, stockSymbol, orderAmount, type: 'SELL',quantity}), await this.updateHoldings(userId, stockSymbol, quantity,false)]);
   }
 
   async history(){
