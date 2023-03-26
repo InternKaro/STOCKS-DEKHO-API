@@ -18,4 +18,8 @@ router.put('/:userId',(req,res)=>{
     return responseHandler(watchlistService.deleteWatchlist(req.body.stockSymbol),res);
 })
 
+router.get('/check/:userId' , (req,res)=>{
+    const watchlistService = new Watchlist(req);
+    return responseHandler(watchlistService.checkInWatchList() , res);
+})
 module.exports = router;

@@ -68,12 +68,15 @@ class Stocks extends BaseService{
     async getHistoricalData(){
         console.log('get')
         const db = getDatabase(app);
-        const reference = ref(db , 'StockHistoricalData/INFY')
+        const reference = ref(db , 'StockHistoricalData')
         let data;
-        onValue( reference , (snapshot)=>{
-            data = snapshot.val()
-            console.log(snapshot.val())
-            return {data}
+        // onValue( reference , (snapshot)=>{
+        //     data = snapshot.val()
+        //     console.log(snapshot.val())
+        //     return {data}
+        // })
+        return get(reference).then(snapshot=>{
+            return {data:snapshot.val()}
         })
         
         return {data}
