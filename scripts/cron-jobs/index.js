@@ -1,6 +1,7 @@
-var cron = require('node-cron');
+const cron = require('node-cron');
 const FetchLivePrices = require('./fetch-live-prices');
 const EvictLocalCache = require('./evict-local-cache');
+const SavePortfolioSnapshot = require('./save-portfolio-snapshot');
 const cronJobs = [
     {
         name: 'fetch-live-prices',
@@ -11,6 +12,11 @@ const cronJobs = [
         name:'evict-local-cache',
         callback: EvictLocalCache,
         schedule: '0 0 * * *',
+    },
+    {
+        name: 'save-portfolio-snapshot',
+        callback: SavePortfolioSnapshot,
+        schedule: '0 0 * * *'
     }
 ];
 (()=>{

@@ -21,7 +21,7 @@ async function priceHistory(query) {
       data: parsedData,
     };
   }
-const addHistoricalData=async()=>{
+const addHistoricalData = async() => {
     const firebaseAccessors = new FirebaseAccessors();
     for(const symbol of stockList){
       const response = await priceHistory({stockSymbol:symbol ,timeframe:730});
