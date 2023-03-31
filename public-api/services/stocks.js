@@ -59,7 +59,7 @@ class Stocks extends BaseService{
         {}
         );
         const response = stockSymbolsInSector.map(symbol => {
-            return {symbol,stockData: currentPriceTicks[symbol]};
+            return currentPriceTicks[symbol];
         });
         return { data: response };
     }

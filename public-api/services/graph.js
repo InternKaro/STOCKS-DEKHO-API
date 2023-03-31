@@ -8,7 +8,7 @@ class Graph extends BaseService {
     super(props);
   }
 
-  async fetchHistoricalDataFromNSE(){
+  async fetchHistoricalDataFromNSE(stockSymbol){
     const maxDays = 750;
     const from = moment()
       .subtract(maxDays, 'days')
@@ -20,20 +20,20 @@ class Graph extends BaseService {
     try {
       parsedData = await parseCSVFromURL(url);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
     return parsedData;
   }
 
   async priceHistory() {
-    const { stockSymbol, timeFrame } = this.query;
-    const firebaseAccessors = new FirebaseAccessors();
-    let data = await firebaseAccessors.getHistoricalData(stockSymbol);
-    if(!data){
-      data = await this.fetchHistoricalDataFromNSE();
-      await firebaseAccessors.setHistoricalData(stockSymbol,data);
-    }
-    return { data: data.slice(0,timeFrame) };
+      const { stockSymbol, timeFrame } = this.query;
+      const firebaseAccessors = new FirebaseAccessors();
+      let data = await firebaseAccessors.getHistoricalData(stockSymbol);
+      if(!data){
+        data = await this.fetchHistoricalDataFromNSE();
+        await firebaseAccessors.setHistoricalData(stockSymbol,data);
+      }
+      return { data: data.slice(0,timeFrame) };
   }
 }
 module.exports = Graph;
