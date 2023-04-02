@@ -23,7 +23,7 @@ class Watchlist extends BaseService {
   async getWatchlist(){
       const {userId} = this.params;
       const watchlist = await WatchlistModel.findOne({userId});
-      return {watchlist:watchlist.stockSymbols};
+      return { watchlist: watchlist && watchlist.stockSymbols };
   }
 
   async checkIfInWatchlist(){
