@@ -24,6 +24,7 @@ async function getCurrentPortfolioValuesForChunk(portfolioSnapshotsChunk){
 }
 
 async function SavePortfolioSnapshot(){
+    console.debug('Saving Portfolio Snapshopt');
     currentPriceTicks = await PriceTicksModel.find();
     currentPriceTicks = currentPriceTicks.reduce(
         (acc, priceTick) => {return {...acc, [priceTick.symbol]: priceTick}},
