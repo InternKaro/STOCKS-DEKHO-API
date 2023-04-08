@@ -3,9 +3,13 @@ const cors = require('cors')
 const routes = require('./public-api/routes');
 require('./scripts/mongo-setup');
 require('./scripts/cron-jobs');
+const { setUpRedis } = require('./public-api/db/redis');
 const app = express();
 const port = process.env.PORT || 8000;
 
+(async ()=>{
+    await setUpRedis();
+})();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

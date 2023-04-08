@@ -26,6 +26,7 @@
     "mongodb": "^4.13.0",
     "mongoose": "^6.8.4",
     "node-cron": "^3.0.2",
+    "redis": "^4.6.5",
     "request": "^2.88.2"
   }
 }

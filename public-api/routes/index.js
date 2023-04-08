@@ -8,6 +8,7 @@ const transactionRouter = require('./transaction');
 const watchlistRouter = require('./watchlist');
 const portfolioRouter = require('./portfolio');
 const walletRouter = require('./wallet');
+const leaderBoard = require('./leaderboard');
 
 const router = express.Router();
 router.use('/graph', graphRouter);
@@ -19,5 +20,6 @@ router.use('/transaction',transactionRouter);
 router.use('/watchlist',watchlistRouter);
 router.use('/portfolio',portfolioRouter);
 router.use('/wallet',walletRouter);
+router.use('/leader-board', leaderBoard);
 
 module.exports = router;
