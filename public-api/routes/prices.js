@@ -4,6 +4,7 @@ const responseHandler = require('../../toolbox/helpers/response-handler');
 const Price = require('../services/price');
 const router = express.Router();
 const {PriceTicksModel, AllStocksModel} = require('../models');
+const { Redis, RedisKeys } = require('../db/redis');
 
 function buildDefaultPriceResponse(stockSymbol){
     return {
@@ -77,18 +78,34 @@ router.get('/search', async (req,res)=>{
 
 router.get('/top-gainers', async (req,res)=>{
     const {limit = 7} = req.query;
+    const cache = new Redis();
+    const cachedResponse = await cache.get('TopGainers');
+    if(cachedResponse){
+        return res.json(cachedResponse);
+    }
     let data = await PriceTicksModel.find({}).sort({pChange: -1}).limit(limit);
+    await cache.set('TopGainers',data);
     res.json({data})
 });
 
 router.get('/top-loosers', async (req,res)=>{
     const {limit = 7} = req.query;
+    const cache = new Redis();
+    const cachedResponse = await cache.get('TopLoosers');
+    if(cachedResponse){
+        return res.json(cachedResponse);
+    }
     let data = await PriceTicksModel.find({}).sort({pChange: 1}).limit(limit);
     res.json({data})
 });
 
 router.get('/most-active', async (req,res)=>{
     const {limit = 8} = req.query;
+    const cache = new Redis();
+    const cachedResponse = await cache.get('MostActive');
+    if(cachedResponse){
+        return res.json(cachedResponse);
+    }
     let [niftyIndexData, ...data] = await PriceTicksModel.find({}).sort({totalTradedVolume: -1}).limit(limit);
     res.json({data})
 });
