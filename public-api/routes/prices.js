@@ -84,7 +84,7 @@ router.get('/top-gainers', async (req,res)=>{
         return res.json(cachedResponse);
     }
     let data = await PriceTicksModel.find({}).sort({pChange: -1}).limit(limit);
-    await cache.set('TopGainers',data);
+    await cache.set('TopGainers',{data});
     res.json({data})
 });
 
@@ -96,6 +96,7 @@ router.get('/top-loosers', async (req,res)=>{
         return res.json(cachedResponse);
     }
     let data = await PriceTicksModel.find({}).sort({pChange: 1}).limit(limit);
+    await cache.set('TopLoosers',{data});
     res.json({data})
 });
 
@@ -107,6 +108,7 @@ router.get('/most-active', async (req,res)=>{
         return res.json(cachedResponse);
     }
     let [niftyIndexData, ...data] = await PriceTicksModel.find({}).sort({totalTradedVolume: -1}).limit(limit);
+    await cache.set('MostActive',{data});
     res.json({data})
 });
 
