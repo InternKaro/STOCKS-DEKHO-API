@@ -64,6 +64,19 @@ class Stocks extends BaseService{
         return { data: response };
     }
 
+    async getAllStocksWithSector(){
+        const allSector = await this.getAllSectors();
+        let response = {};
+        console.log(allSector);
+        
+        for (const sector of allSector.data) {
+            const sectorDetails = await SectorModel.findOne({name: sector.name});
+            const [index,...stockSymbolsInSector] = sectorDetails.stocks;
+            response[sector.name]=stockSymbolsInSector;
+        };
+        return {data:response}
+    }
+
     async getHistoricalData(){
         const { symbol } = this.params;
         const firebaseAccessors = new FirebaseAccessors();
