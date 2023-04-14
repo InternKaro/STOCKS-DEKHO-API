@@ -31,7 +31,10 @@ router.get('/sectors/:sector', async(req,res) =>{
     const stocksService = new Stocks(req);
     return responseHandler(stocksService.getAllStocksBySector(),res);
 });
-
+router.get('/allSectors', async(req,res) =>{
+    const stocksService = new Stocks(req);
+    return responseHandler(stocksService.getAllStocksWithSector(),res);
+});
 router.get('/:stockSymbol', async(req,res)=>{
     const stocksService = new Stocks(req);
     return responseHandler(stocksService.getStockDetails(),res);

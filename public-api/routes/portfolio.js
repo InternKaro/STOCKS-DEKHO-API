@@ -6,4 +6,8 @@ router.get('/:userId',(req,res)=>{
     const portfolioService = new Portfolio(req);
     return responseHandler(portfolioService.getHoldings(),res);
 });
+router.get('/sector/:userId',(req,res)=>{
+    const portfolioService = new Portfolio(req);
+    return responseHandler( portfolioService.getHoldingBySector(), res );
+})
 module.exports = router;
