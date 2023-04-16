@@ -39,13 +39,14 @@ class Price extends BaseService {
 
   async checkIfValidSellOrder(transactionData){
     const {userHoldings,quantity,stockSymbol} = transactionData;
-    if(! userHoldings || userHoldings.holdings[stockSymbol] < quantity){
+    if(! userHoldings || !userHoldings.holdings[stockSymbol] || userHoldings.holdings[stockSymbol] < quantity){
       throw new BadRequest(`You have maximum ${ userHoldings && userHoldings.holdings[stockSymbol]} holdings`);
     }
   }
 
   async reviewBuy() {
-    const { quantity, stockSymbol, userId } = this.body;
+    let { quantity, stockSymbol, userId } = this.body;
+    quantity = parseInt(quantity);
     const [priceTick, userBalanceEntry] = await Promise.all([PriceTicksModel.findOne({symbol: stockSymbol}),BalanceModel.findOne({userId})]);
     if(!priceTick){
       throw new BadRequest(`Price ticks not found for ${stockSymbol}`);
@@ -60,14 +61,16 @@ class Price extends BaseService {
   };
 
   async buy() {
-    const { userId, stockSymbol, orderAmount,quantity } = this.body;
+    let { userId, stockSymbol, orderAmount,quantity } = this.body;
+    quantity = parseInt(quantity);
     const balanceEntry = await BalanceModel.findOne({ userId });
     const {balance: currentBalance} = balanceEntry;
     return await Promise.all([ BalanceModel.updateOne({ userId }, { $set:  { balance : parseFloat(currentBalance) - parseFloat(orderAmount) } }), TransactionLogsModel.create({userId, stockSymbol, orderAmount, type: 'BUY', quantity}), await this.updateHoldings(userId, stockSymbol, quantity,true)]);
   }
 
   async reviewSell() {
-    const { quantity, stockSymbol, userId } = this.body;
+    let { quantity, stockSymbol, userId } = this.body;
+    quantity = parseInt(quantity);
     const [priceTick, userBalanceEntry, userHoldings] = await Promise.all([PriceTicksModel.findOne({symbol: stockSymbol}),BalanceModel.findOne({ userId }),HoldingsModel.findOne({ userId })]);
     if(!priceTick){
       throw new BadRequest(`Price ticks not found for ${stockSymbol}`);
@@ -82,7 +85,8 @@ class Price extends BaseService {
   };
 
   async sell() {
-    const { userId, stockSymbol, orderAmount,quantity } = this.body;
+    let { userId, stockSymbol, orderAmount,quantity } = this.body;
+    quantity = parseInt(quantity);
     const balanceEntry = await BalanceModel.findOne({ userId });
     const {balance: currentBalance} = balanceEntry;
     return await Promise.all([ BalanceModel.updateOne({ userId }, { $set:  { balance : parseFloat(currentBalance) + parseFloat(orderAmount) } }), TransactionLogsModel.create({userId, stockSymbol, orderAmount, type: 'SELL',quantity}), await this.updateHoldings(userId, stockSymbol, quantity,false)]);
