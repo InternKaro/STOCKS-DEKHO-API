@@ -30,7 +30,7 @@ class Portfolio extends BaseService{
                 response[sector.name]+=1;
             }
         })
-        return { data: response , stock:sectorList , stockSymbolsHeld};
+        return { data: response };
     }
 
 
