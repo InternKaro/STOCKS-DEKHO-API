@@ -1,5 +1,5 @@
 const BaseService = require('./base-service');
-const { WatchlistModel } = require('../models');
+const { WatchlistModel, PriceTicksModel } = require('../models');
 
 
 class Watchlist extends BaseService {
@@ -20,11 +20,16 @@ class Watchlist extends BaseService {
    const data = await WatchlistModel.create({stockSymbols:[ ...new Set(existingWatchlistSymbols) ],userId});
    return {data};
 }
-  async getWatchlist(){
-      const {userId} = this.params;
-      const watchlist = await WatchlistModel.findOne({userId});
-      return { watchlist: watchlist && watchlist.stockSymbols };
-  }
+async getWatchlist(){
+  const {userId} = this.params;
+  const watchlist = await WatchlistModel.findOne({userId});
+  const promises = watchlist.stockSymbols.map(async (stock)=>{
+    let currentPriceTicks = await PriceTicksModel.find({symbol:stock});
+    return currentPriceTicks.length>0? currentPriceTicks[0]:{};
+  });
+  const response = await Promise.all(promises);
+  return { watchlist: response };
+}
 
   async checkIfInWatchlist(){
     const { userId } = this.params;
