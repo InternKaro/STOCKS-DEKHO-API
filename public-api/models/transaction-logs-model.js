@@ -7,6 +7,7 @@ const TransactionLogsSchema = new Schema({
     orderAmount: Number,
     quantity: Number,
     type: {type: String, enum: ['BUY','SELL'], required: true},
+    competetionId: { type: String, default: 1 },
   },
   {
     timestamps: true,

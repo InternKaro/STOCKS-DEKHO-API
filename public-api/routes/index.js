@@ -9,6 +9,7 @@ const watchlistRouter = require('./watchlist');
 const portfolioRouter = require('./portfolio');
 const walletRouter = require('./wallet');
 const leaderBoard = require('./leaderboard');
+const competitionRouter = require('./competition');
 
 const router = express.Router();
 router.use('/graph', graphRouter);
@@ -21,5 +22,6 @@ router.use('/watchlist',watchlistRouter);
 router.use('/portfolio',portfolioRouter);
 router.use('/wallet',walletRouter);
 router.use('/leader-board', leaderBoard);
+router.use('/competition',competitionRouter)
 
 module.exports = router;

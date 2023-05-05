@@ -1,4 +1,3 @@
-const { object } = require('joi');
 const { HoldingsModel, PriceTicksModel , SectorModel } = require('../models');
 const BaseService = require('./base-service');
 const StocksService = require('./stocks'); 
@@ -20,8 +19,7 @@ class Portfolio extends BaseService{
         const { holdings } = userHoldingsMongo;
         const stockSymbolsHeld = Object.keys(holdings);
         const response = {};
-        stockSymbolsHeld.map((stock)=>{
-            console.log(stock);
+        stockSymbolsHeld.forEach((stock)=>{
             const sector = sectorList.find(sector=>sector.stocks.includes(stock))
             if(sector){
                 if(!response[sector.name]){
@@ -36,7 +34,7 @@ class Portfolio extends BaseService{
 
     async getHoldings(){
         const { userId } = this.params;
-        const userHoldingsMongo = await HoldingsModel.findOne({userId});
+        const userHoldingsMongo = await HoldingsModel.findOne({ userId, competetionId: 1 });
         const { holdings } = userHoldingsMongo;
         const stockSymbolsHeld = Object.keys(holdings);
         let currentPriceTicks = await PriceTicksModel.find({symbol:{$in:stockSymbolsHeld}});
