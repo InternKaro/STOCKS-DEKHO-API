@@ -6,6 +6,7 @@ const HoldingsModel = require('./holdings-model');
 const WatchlistModel = require('./watchlist-model');
 const SectorModel = require('./sectors-model');
 const PortfolioSnapshotModel = require('./portfolio-snapshot-model');
+const CompetitionModel = require('./competition-model');
 module.exports = {
     AllStocksModel,
     PriceTicksModel,
@@ -15,4 +16,5 @@ module.exports = {
     WatchlistModel,
     SectorModel,
     PortfolioSnapshotModel,
+    CompetitionModel,
 }
