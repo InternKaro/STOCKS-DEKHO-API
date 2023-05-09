@@ -8,7 +8,8 @@ class LeaderBoard extends BaseService {
 
   async getSortedPortfolios() {
     // Get all holdings for all users
-    const holdings = await HoldingsModel.find({});
+    const { competetionId } = this.query;
+    const holdings = await HoldingsModel.find({ competetionId });
   
     // Get the current price for each stock symbol
     const priceTicks = await PriceTicksModel.find({});

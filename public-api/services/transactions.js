@@ -11,10 +11,11 @@ class Price extends BaseService {
   }
 
   async updateHoldings(userId,stockSymbol,quantity, buy){
+    const { competetionId } = this.query;
     quantity = parseInt(quantity);
-    let holdings = await HoldingsModel.findOne({ userId });
+    let holdings = await HoldingsModel.findOne({ userId, competetionId });
     if (!holdings) {
-        holdings = new HoldingsModel({ userId });
+        holdings = new HoldingsModel({ userId, competetionId });
     }
     holdings.holdings[stockSymbol] = (holdings.holdings[stockSymbol] || 0) + (buy? quantity: -1 * quantity);
     holdings.markModified('holdings');
@@ -45,9 +46,10 @@ class Price extends BaseService {
   }
 
   async reviewBuy() {
+    const { competetionId } = this.query;
     let { quantity, stockSymbol, userId } = this.body;
     quantity = parseInt(quantity);
-    const [priceTick, userBalanceEntry] = await Promise.all([PriceTicksModel.findOne({symbol: stockSymbol}),BalanceModel.findOne({userId})]);
+    const [priceTick, userBalanceEntry] = await Promise.all([PriceTicksModel.findOne({symbol: stockSymbol}),BalanceModel.findOne({userId, competetionId})]);
     if(!priceTick){
       throw new BadRequest(`Price ticks not found for ${stockSymbol}`);
     }
@@ -61,17 +63,19 @@ class Price extends BaseService {
   };
 
   async buy() {
+    const { competetionId } = this.query;
     let { userId, stockSymbol, orderAmount,quantity } = this.body;
     quantity = parseInt(quantity);
     const balanceEntry = await BalanceModel.findOne({ userId });
     const {balance: currentBalance} = balanceEntry;
-    return await Promise.all([ BalanceModel.updateOne({ userId }, { $set:  { balance : parseFloat(currentBalance) - parseFloat(orderAmount) } }), TransactionLogsModel.create({userId, stockSymbol, orderAmount, type: 'BUY', quantity}), await this.updateHoldings(userId, stockSymbol, quantity,true)]);
+    return await Promise.all([ BalanceModel.updateOne({ userId,competetionId }, { $set:  { balance : parseFloat(currentBalance) - parseFloat(orderAmount) } }), TransactionLogsModel.create({competetionId,userId, stockSymbol, orderAmount, type: 'BUY', quantity}), await this.updateHoldings(userId, stockSymbol, quantity,true)]);
   }
 
   async reviewSell() {
+    const { competetionId } = this.query;
     let { quantity, stockSymbol, userId } = this.body;
     quantity = parseInt(quantity);
-    const [priceTick, userBalanceEntry, userHoldings] = await Promise.all([PriceTicksModel.findOne({symbol: stockSymbol}),BalanceModel.findOne({ userId }),HoldingsModel.findOne({ userId })]);
+    const [priceTick, userBalanceEntry, userHoldings] = await Promise.all([PriceTicksModel.findOne({symbol: stockSymbol}),BalanceModel.findOne({ userId,competetionId }),HoldingsModel.findOne({ userId,competetionId })]);
     if(!priceTick){
       throw new BadRequest(`Price ticks not found for ${stockSymbol}`);
     }
@@ -85,17 +89,19 @@ class Price extends BaseService {
   };
 
   async sell() {
+    const { competetionId } = this.query;
     let { userId, stockSymbol, orderAmount,quantity } = this.body;
     quantity = parseInt(quantity);
     const balanceEntry = await BalanceModel.findOne({ userId });
     const {balance: currentBalance} = balanceEntry;
-    return await Promise.all([ BalanceModel.updateOne({ userId }, { $set:  { balance : parseFloat(currentBalance) + parseFloat(orderAmount) } }), TransactionLogsModel.create({userId, stockSymbol, orderAmount, type: 'SELL',quantity}), await this.updateHoldings(userId, stockSymbol, quantity,false)]);
+    return await Promise.all([ BalanceModel.updateOne({ userId,competetionId }, { $set:  { balance : parseFloat(currentBalance) + parseFloat(orderAmount) } }), TransactionLogsModel.create({userId, stockSymbol, orderAmount, type: 'SELL',quantity,competetionId}), await this.updateHoldings(userId, stockSymbol, quantity,false)]);
   }
 
   async history(){
+    const { competetionId } = this.query
     const {userId} = this.params;
     let { stockSymbol , type } = this.query;
-    const filters = { userId , ...stockSymbol?{stockSymbol}:{} , ...type?{type}:{} }
+    const filters = { userId , competetionId, ...stockSymbol?{stockSymbol}:{} , ...type?{type}:{} }
     const allTransactions = await TransactionLogsModel.find(filters).sort({ createdAt:-1 });
     return {allTransactions};
   }

@@ -14,8 +14,9 @@ class Portfolio extends BaseService{
             
         })
         
+        const { competetionId } = this.query;
         const { userId } = this.params;
-        const userHoldingsMongo = await HoldingsModel.findOne({userId});
+        const userHoldingsMongo = await HoldingsModel.findOne({userId, competetionId});
         const { holdings } = userHoldingsMongo;
         const stockSymbolsHeld = Object.keys(holdings);
         const response = {};
@@ -33,8 +34,9 @@ class Portfolio extends BaseService{
 
 
     async getHoldings(){
+        const { competetionId } = this.query;
         const { userId } = this.params;
-        const userHoldingsMongo = await HoldingsModel.findOne({ userId, competetionId: 1 });
+        const userHoldingsMongo = await HoldingsModel.findOne({ userId, competetionId });
         const { holdings } = userHoldingsMongo;
         const stockSymbolsHeld = Object.keys(holdings);
         let currentPriceTicks = await PriceTicksModel.find({symbol:{$in:stockSymbolsHeld}});

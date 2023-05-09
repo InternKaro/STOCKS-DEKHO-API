@@ -7,7 +7,7 @@ class Wallet extends BaseService {
 
   async getUserBalance() {
     const { userId } = this.params;
-    const userBalance = await BalanceModel.findOne({userId})
+    const userBalance = await BalanceModel.findOne({userId,competetionId})
     return {data: userBalance };
   }
 }

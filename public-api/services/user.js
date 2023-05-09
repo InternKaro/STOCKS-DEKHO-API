@@ -10,11 +10,11 @@ class User extends BaseService{
     }
 
     async signup(){
-        const {userId} = this.body;
+        const {userId, competetionId} = this.body;
         if(!userId){
             throw new BadRequest('UserId is required');
         }
-        const balanceDetails = await BalanceModel.create({userId,balance: this.initialBalance});
+        const balanceDetails = await BalanceModel.create({userId,balance: this.initialBalance,competetionId});
         return {balanceDetails};
     }
 }
