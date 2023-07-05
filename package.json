@@ -24,7 +24,7 @@
     "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
-    "mongodb": "^4.13.0",
+    "mongodb": "^4.16.0",
     "mongoose": "^6.8.4",
     "node-cron": "^3.0.2",
     "redis": "^4.6.5",
