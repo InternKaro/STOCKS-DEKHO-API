@@ -25,7 +25,7 @@
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "mongodb": "^4.13.0",
-    "mongoose": "^6.10.5",
+    "mongoose": "^6.11.2",
     "node-cron": "^3.0.2",
     "redis": "^4.6.5",
     "request": "^2.88.2"
