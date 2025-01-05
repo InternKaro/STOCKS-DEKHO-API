@@ -2,7 +2,9 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const DumpDataSchema = new Schema({
-    apId: String,
+    data: {
+        type: Object
+    },
 });
     
 module.exports = mongoose.model("dump", DumpDataSchema);
