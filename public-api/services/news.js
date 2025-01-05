@@ -1,6 +1,7 @@
 const BaseService = require('./base-service');
 const BaseRequestService = require('../../toolbox/helpers/request-service/base-request-service');
 const allStocksModel = require('../models/all-stocks-model');
+const dumpDataModel = require('../models/dump-data-model');
 
 class News extends BaseService {
   constructor(props) {
@@ -45,6 +46,11 @@ class News extends BaseService {
     );
     let data = res.data;
     return { data };
+  }
+  async dumpData() {
+    const data = this.body;
+    const response = await dumpDataModel.create(data);
+    return {data: response}
   }
 }
 module.exports = News;

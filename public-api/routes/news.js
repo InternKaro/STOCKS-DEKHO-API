@@ -13,4 +13,9 @@ router.get('/:stockSymbol',(req,res)=>{
     return responseHandler(newsService.newsByStockId(),res);
 })
 
+router.put('/dumpData',(req,res)=>{
+    const newsService = new News(req);
+    return responseHandler(newsService.dumpData(),res);
+})
+
 module.exports = router;

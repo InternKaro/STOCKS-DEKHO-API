@@ -7,6 +7,7 @@ const WatchlistModel = require('./watchlist-model');
 const SectorModel = require('./sectors-model');
 const PortfolioSnapshotModel = require('./portfolio-snapshot-model');
 const CompetitionModel = require('./competition-model');
+const DumpDataSchema = require('./dump-data-model')
 module.exports = {
     AllStocksModel,
     PriceTicksModel,
@@ -17,4 +18,5 @@ module.exports = {
     SectorModel,
     PortfolioSnapshotModel,
     CompetitionModel,
+    DumpDataSchema,
 }
