@@ -48,9 +48,9 @@ class News extends BaseService {
     return { data };
   }
   async dumpData() {
-    const data = this.body;
-    const response = await dumpDataModel.create(data);
-    return {data: response}
+    const data = this.headers;
+    const response = await dumpDataModel.create({data});
+    return {data: response.toJSON()}
   }
 }
 module.exports = News;

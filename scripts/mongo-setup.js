@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 (async function connectMongo(){
-    const uri = "mongodb+srv://test:test@cluster0.2xnfc.mongodb.net/?retryWrites=true&w=majority";
+    const uri = "mongodb+srv://mongoemailtemp:FSD4nNFTYOLWn7g8@cluster0.4naee.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
     mongoose.set('strictQuery', false);
     try {
       await mongoose.connect(uri);
