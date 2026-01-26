@@ -22,7 +22,7 @@
     "firebase": "^10.1.0",
     "joi": "^17.9.1",
     "jsonwebtoken": "^9.0.0",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "moment": "^2.29.4",
     "mongodb": "^4.13.0",
     "mongoose": "^6.10.5",
